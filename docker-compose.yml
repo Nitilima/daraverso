@@ -1,0 +1,44 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: dareverso_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: dareverso_local
+      MYSQL_USER: dareverso
+      MYSQL_PASSWORD: dareverso123
+    ports:
+      - "3309:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./api/database.sql:/docker-entrypoint-initdb.d/database.sql
+    restart: unless-stopped
+
+  php:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: dareverso_php
+    ports:
+      - "8050:80"
+    volumes:
+      - ./api:/var/www/html
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: daraverso_phpmyadmin
+    ports:
+      - "8082:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
+volumes:
+  mysql_data:

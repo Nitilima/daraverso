@@ -1,0 +1,243 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
+
+html {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --cor-fundo: #0f0c1a;
+  --cor-card: #1a1530;
+  --cor-card-hover: #201b3a;
+  --cor-accent: #c9a96e;
+  --cor-accent-suave: #e8cc9a;
+  --cor-texto: #f0eaff;
+  --cor-secundario: #8b7fa8;
+  --cor-borda: #2e2645;
+  --cor-erro: #e07070;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--cor-fundo);
+  background-image:
+    radial-gradient(ellipse 75% 50% at 12% 35%, rgba(45, 15, 95, 0.4) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 65% at 88% 18%, rgba(18, 8, 70, 0.35) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 52% 92%, rgba(70, 18, 38, 0.2) 0%, transparent 65%);
+  font-family: 'Lora', Georgia, serif;
+  color: var(--cor-texto);
+}
+
+/* ========================
+   ESTRELAS BRILHANTES
+   Técnica: box-shadow em elemento de 1-3px
+   Cada shadow = uma estrela na posição X Y
+   ======================== */
+
+@keyframes tremeluz-a {
+  0%   { opacity: 0.9; }
+  25%  { opacity: 0.3; }
+  50%  { opacity: 0.8; }
+  75%  { opacity: 0.15; }
+  100% { opacity: 0.9; }
+}
+
+@keyframes tremeluz-b {
+  0%   { opacity: 0.2; }
+  30%  { opacity: 1; }
+  55%  { opacity: 0.4; }
+  80%  { opacity: 0.85; }
+  100% { opacity: 0.2; }
+}
+
+@keyframes tremeluz-c {
+  0%   { opacity: 1; filter: brightness(1); }
+  20%  { opacity: 0.3; filter: brightness(0.5); }
+  50%  { opacity: 0.9; filter: brightness(1.2); }
+  70%  { opacity: 0.5; filter: brightness(0.7); }
+  100% { opacity: 1; filter: brightness(1); }
+}
+
+/* Camada 1 — Estrelas pequenas e tênues (65 estrelas, 1px) */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 1px; height: 1px;
+  background: transparent;
+  box-shadow:
+    156px 47px rgba(240,234,255,0.5), 743px 123px rgba(240,234,255,0.35),
+    280px 120px rgba(240,234,255,0.45), 65px 210px rgba(240,234,255,0.3),
+    1050px 130px rgba(240,234,255,0.5), 520px 65px rgba(240,234,255,0.4),
+    850px 250px rgba(240,234,255,0.35), 1450px 150px rgba(240,234,255,0.5),
+    1720px 200px rgba(240,234,255,0.3), 200px 420px rgba(240,234,255,0.45),
+    640px 420px rgba(240,234,255,0.4), 950px 560px rgba(240,234,255,0.35),
+    1500px 440px rgba(240,234,255,0.5), 1680px 380px rgba(240,234,255,0.3),
+    120px 650px rgba(240,234,255,0.45), 590px 750px rgba(240,234,255,0.4),
+    970px 720px rgba(240,234,255,0.35), 1480px 750px rgba(240,234,255,0.5),
+    1790px 810px rgba(240,234,255,0.3), 90px 80px rgba(240,234,255,0.4),
+    730px 250px rgba(240,234,255,0.35), 1150px 80px rgba(240,234,255,0.5),
+    1580px 60px rgba(240,234,255,0.4), 310px 850px rgba(240,234,255,0.35),
+    710px 620px rgba(240,234,255,0.5), 1090px 680px rgba(240,234,255,0.4),
+    1620px 690px rgba(240,234,255,0.35), 40px 700px rgba(240,234,255,0.45),
+    560px 30px rgba(240,234,255,0.5), 820px 165px rgba(240,234,255,0.3),
+    1300px 200px rgba(240,234,255,0.4), 1870px 640px rgba(240,234,255,0.35),
+    170px 760px rgba(240,234,255,0.5), 500px 710px rgba(240,234,255,0.4),
+    810px 920px rgba(240,234,255,0.3), 1570px 720px rgba(240,234,255,0.45),
+    350px 165px rgba(240,234,255,0.4), 680px 140px rgba(240,234,255,0.35),
+    980px 200px rgba(240,234,255,0.5), 1380px 245px rgba(240,234,255,0.4),
+    1850px 85px rgba(240,234,255,0.35), 380px 575px rgba(240,234,255,0.45),
+    770px 780px rgba(240,234,255,0.4), 1160px 800px rgba(240,234,255,0.35),
+    1440px 890px rgba(240,234,255,0.5), 430px 870px rgba(240,234,255,0.4),
+    1130px 620px rgba(240,234,255,0.35), 1290px 840px rgba(240,234,255,0.5),
+    260px 590px rgba(240,234,255,0.4), 900px 55px rgba(240,234,255,0.35),
+    1100px 20px rgba(240,234,255,0.5), 490px 300px rgba(240,234,255,0.4),
+    1180px 285px rgba(240,234,255,0.35), 1650px 120px rgba(240,234,255,0.5),
+    110px 490px rgba(240,234,255,0.4), 620px 345px rgba(240,234,255,0.35),
+    1030px 310px rgba(240,234,255,0.5), 1250px 540px rgba(240,234,255,0.4),
+    280px 920px rgba(240,234,255,0.35), 540px 830px rgba(240,234,255,0.5),
+    1040px 760px rgba(240,234,255,0.4), 445px 220px rgba(240,234,255,0.35),
+    760px 90px rgba(240,234,255,0.5), 1280px 75px rgba(240,234,255,0.4),
+    320px 280px rgba(240,234,255,0.3), 1820px 510px rgba(240,234,255,0.45);
+  animation: tremeluz-a 6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Camada 2 — Estrelas médias douradas e brancas (25 estrelas, 2px) */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 2px; height: 2px;
+  background: transparent;
+  box-shadow:
+    370px 95px rgba(201,169,110,0.75), 880px 180px rgba(240,234,255,0.85),
+    1340px 95px rgba(201,169,110,0.7), 600px 350px rgba(240,234,255,0.8),
+    1120px 390px rgba(201,169,110,0.75), 200px 540px rgba(240,234,255,0.85),
+    750px 470px rgba(201,169,110,0.7), 1540px 310px rgba(240,234,255,0.8),
+    1780px 420px rgba(201,169,110,0.75), 450px 680px rgba(240,234,255,0.85),
+    1000px 620px rgba(201,169,110,0.7), 1380px 680px rgba(240,234,255,0.8),
+    1670px 580px rgba(201,169,110,0.75), 130px 820px rgba(240,234,255,0.85),
+    680px 860px rgba(201,169,110,0.7), 1200px 820px rgba(240,234,255,0.8),
+    1520px 880px rgba(201,169,110,0.75), 1900px 750px rgba(240,234,255,0.85),
+    330px 170px rgba(201,169,110,0.7), 70px 370px rgba(240,234,255,0.8),
+    1060px 490px rgba(201,169,110,0.75), 850px 720px rgba(240,234,255,0.85),
+    1760px 160px rgba(201,169,110,0.7), 500px 920px rgba(240,234,255,0.8),
+    1290px 440px rgba(201,169,110,0.75);
+  animation: tremeluz-b 4s ease-in-out 1.5s infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Camada 3 — Estrelas grandes e brilhantes (12 estrelas, 3px com brilho) */
+html::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 3px; height: 3px;
+  background: transparent;
+  box-shadow:
+    420px 140px 2px 1px rgba(255,248,230,0.95),
+    990px 75px 2px 1px rgba(240,234,255,0.95),
+    1560px 220px 2px 1px rgba(201,169,110,0.9),
+    240px 390px 2px 1px rgba(255,248,230,0.95),
+    780px 540px 2px 1px rgba(240,234,255,0.9),
+    1250px 310px 2px 1px rgba(255,248,230,0.95),
+    1820px 480px 2px 1px rgba(201,169,110,0.9),
+    550px 730px 2px 1px rgba(240,234,255,0.95),
+    1100px 820px 2px 1px rgba(255,248,230,0.9),
+    1640px 750px 2px 1px rgba(201,169,110,0.95),
+    90px 920px 2px 1px rgba(240,234,255,0.9),
+    1430px 560px 2px 1px rgba(255,248,230,0.95);
+  filter: blur(0.4px);
+  animation: tremeluz-c 3s ease-in-out 0.8s infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Animação de entrada suave */
+@keyframes surgir {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes brilhar {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.animar-entrada {
+  animation: surgir 0.6s ease forwards;
+}
+
+.animar-entrada-lenta {
+  animation: surgir 0.8s ease 0.15s both;
+}
+
+/* Inputs customizados */
+.input-celestial {
+  width: 100%;
+  background: rgba(15, 12, 26, 0.7);
+  border: 1px solid var(--cor-borda);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: var(--cor-texto);
+  font-family: 'Lora', serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-celestial::placeholder {
+  color: var(--cor-secundario);
+  opacity: 0.7;
+}
+
+.input-celestial:focus {
+  border-color: var(--cor-accent);
+  box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.12);
+}
+
+/* Botão principal */
+.btn-primario {
+  width: 100%;
+  background: linear-gradient(135deg, #c9a96e 0%, #a8883f 100%);
+  color: #0f0c1a;
+  border: none;
+  border-radius: 12px;
+  padding: 13px 24px;
+  font-family: 'Lora', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  letter-spacing: 0.02em;
+}
+
+.btn-primario:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(201, 169, 110, 0.3);
+}
+
+.btn-primario:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-primario:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
