@@ -9,12 +9,32 @@ CREATE DATABASE IF NOT EXISTS dareverso_local
 USE dareverso_local;
 
 -- ------------------------------------------------
--- Categorias / Gêneros das histórias
+-- Categorias / Gêneros
 -- ------------------------------------------------
 CREATE TABLE IF NOT EXISTS categorias (
   id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   nome       VARCHAR(100) NOT NULL,
   slug       VARCHAR(100) NOT NULL UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ------------------------------------------------
+-- Tipos (universo alternativo, canon, crossover...)
+-- ------------------------------------------------
+CREATE TABLE IF NOT EXISTS tipos (
+  id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  nome       VARCHAR(100) NOT NULL,
+  slug       VARCHAR(100) NOT NULL UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ------------------------------------------------
+-- Personagens
+-- ------------------------------------------------
+CREATE TABLE IF NOT EXISTS personagens (
+  id         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  nome       VARCHAR(150) NOT NULL,
+  slug       VARCHAR(150) NOT NULL UNIQUE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -47,13 +67,12 @@ CREATE TABLE IF NOT EXISTS historias (
   capa_url             VARCHAR(500) DEFAULT NULL,
   classificacao_etaria VARCHAR(10)  DEFAULT 'Livre',
   publicada            TINYINT(1)   DEFAULT 0,
-  data_publicacao      DATETIME     DEFAULT NULL,
   created_at           TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
   updated_at           TIMESTAMP    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- ------------------------------------------------
--- Relação histórias <-> categorias (muitos para muitos)
+-- Relações muitos-para-muitos
 -- ------------------------------------------------
 CREATE TABLE IF NOT EXISTS historia_categorias (
   historia_id  INT UNSIGNED NOT NULL,
@@ -63,15 +82,57 @@ CREATE TABLE IF NOT EXISTS historia_categorias (
   FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE CASCADE
 );
 
--- ------------------------------------------------
--- Relação histórias <-> avisos (muitos para muitos)
--- ------------------------------------------------
+CREATE TABLE IF NOT EXISTS historia_tipos (
+  historia_id INT UNSIGNED NOT NULL,
+  tipo_id     INT UNSIGNED NOT NULL,
+  PRIMARY KEY (historia_id, tipo_id),
+  FOREIGN KEY (historia_id) REFERENCES historias(id) ON DELETE CASCADE,
+  FOREIGN KEY (tipo_id)     REFERENCES tipos(id)     ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS historia_personagens (
+  historia_id   INT UNSIGNED NOT NULL,
+  personagem_id INT UNSIGNED NOT NULL,
+  PRIMARY KEY (historia_id, personagem_id),
+  FOREIGN KEY (historia_id)   REFERENCES historias(id)   ON DELETE CASCADE,
+  FOREIGN KEY (personagem_id) REFERENCES personagens(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS historia_avisos (
   historia_id INT UNSIGNED NOT NULL,
   aviso_id    INT UNSIGNED NOT NULL,
   PRIMARY KEY (historia_id, aviso_id),
   FOREIGN KEY (historia_id) REFERENCES historias(id) ON DELETE CASCADE,
   FOREIGN KEY (aviso_id)    REFERENCES avisos(id)    ON DELETE CASCADE
+);
+
+-- ------------------------------------------------
+-- Capítulos
+-- ------------------------------------------------
+CREATE TABLE IF NOT EXISTS capitulos (
+  id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  historia_id INT UNSIGNED NOT NULL,
+  titulo      VARCHAR(255) NOT NULL,
+  conteudo    LONGTEXT     NOT NULL,
+  ordem       INT UNSIGNED NOT NULL DEFAULT 1,
+  created_at  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+  updated_at  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (historia_id) REFERENCES historias(id) ON DELETE CASCADE
+);
+
+-- ------------------------------------------------
+-- Destaques (carousel da home)
+-- ------------------------------------------------
+CREATE TABLE IF NOT EXISTS destaques (
+  id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  titulo      VARCHAR(255) NOT NULL,
+  descricao   TEXT         DEFAULT NULL,
+  imagem_url  VARCHAR(500) DEFAULT NULL,
+  historia_id INT UNSIGNED DEFAULT NULL,
+  ordem       INT UNSIGNED NOT NULL DEFAULT 1,
+  ativo       TINYINT(1)   DEFAULT 1,
+  created_at  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (historia_id) REFERENCES historias(id) ON DELETE SET NULL
 );
 
 -- ------------------------------------------------
@@ -96,30 +157,4 @@ CREATE TABLE IF NOT EXISTS sessoes (
   expires_at  DATETIME     NOT NULL,
   created_at  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
-);
-
--- ------------------------------------------------
--- Histórias lidas por cada usuário
--- ------------------------------------------------
-CREATE TABLE IF NOT EXISTS historias_lidas (
-  usuario_id  INT UNSIGNED NOT NULL,
-  historia_id INT UNSIGNED NOT NULL,
-  lida_em     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (usuario_id, historia_id),
-  FOREIGN KEY (usuario_id)  REFERENCES usuarios(id)  ON DELETE CASCADE,
-  FOREIGN KEY (historia_id) REFERENCES historias(id) ON DELETE CASCADE
-);
-
--- ------------------------------------------------
--- Capítulos das histórias
--- ------------------------------------------------
-CREATE TABLE IF NOT EXISTS capitulos (
-  id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  historia_id INT UNSIGNED NOT NULL,
-  titulo      VARCHAR(255) NOT NULL,
-  conteudo    LONGTEXT     NOT NULL,
-  ordem       INT UNSIGNED NOT NULL DEFAULT 1,
-  created_at  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
-  updated_at  TIMESTAMP    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (historia_id) REFERENCES historias(id) ON DELETE CASCADE
 );
