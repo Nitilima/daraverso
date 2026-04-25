@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import "./App.css";
 import logo from "./assets/logo.png";
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { get } from "./services/api";
 import {
   Carousel,
   CarouselContent,
@@ -10,41 +12,57 @@ import {
 } from "@/components/ui/carousel";
 import { FaInstagram, FaYoutube, FaTwitch } from "react-icons/fa";
 
-const itens = [
-  { titulo: "Item 1", descricao: "Descrição do item 1" },
-  { titulo: "Item 2", descricao: "Descrição do item 2" },
-  { titulo: "Item 3", descricao: "Descrição do item 3" },
-];
-
-const historias = [
-  {
-    titulo: "Título da História",
-    descricao:
-      '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."',
-    tags: [
-      "universo alternativo",
-      "universo alternativo",
-      "universo alternativo",
-    ],
-  },
-  {
-    titulo: "Título da História",
-    descricao:
-      '"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."',
-    tags: [
-      "universo alternativo",
-      "universo alternativo",
-      "universo alternativo",
-    ],
-  },
-];
+interface Tag { nome: string; slug: string; }
+interface Destaque { id: number; titulo: string; descricao: string | null; imagem_url: string | null; }
+interface Historia { id: number; titulo: string; slug: string; sinopse: string | null; capa_url: string | null; categorias: Tag[]; tipos: Tag[]; }
+interface Filtro { id: number; nome: string; slug: string; }
 
 function App() {
+  const [destaques, setDestaques]     = useState<Destaque[]>([]);
+  const [historias, setHistorias]     = useState<Historia[]>([]);
+  const [categorias, setCategorias]   = useState<Filtro[]>([]);
+  const [tipos, setTipos]             = useState<Filtro[]>([]);
+  const [personagens, setPersonagens] = useState<Filtro[]>([]);
+  const [pagina, setPagina]           = useState(1);
+  const [totalPaginas, setTotalPaginas] = useState(1);
+  const [filtroGenero, setFiltroGenero]       = useState("");
+  const [filtroTipo, setFiltroTipo]           = useState("");
+  const [filtroPersonagem, setFiltroPersonagem] = useState("");
+
+  useEffect(() => {
+    Promise.all([
+      get("destaques/listar.php"),
+      get("categorias/listar.php"),
+      get("tipos/listar.php"),
+      get("personagens/listar.php"),
+    ]).then(([dest, cats, tip, pers]) => {
+      setDestaques(Array.isArray(dest) ? dest : []);
+      setCategorias(Array.isArray(cats) ? cats : (cats.categorias ?? []));
+      setTipos(Array.isArray(tip) ? tip : []);
+      setPersonagens(Array.isArray(pers) ? pers : []);
+    }).catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams({ pagina: String(pagina) });
+    if (filtroGenero)     params.append("genero",     filtroGenero);
+    if (filtroTipo)       params.append("tipo",       filtroTipo);
+    if (filtroPersonagem) params.append("personagem", filtroPersonagem);
+    get(`historias/listar.php?${params}`)
+      .then((resp) => { setHistorias(resp.dados); setTotalPaginas(resp.paginas); })
+      .catch(console.error);
+  }, [pagina, filtroGenero, filtroTipo, filtroPersonagem]);
+
+  function mudarFiltro(setter: (v: string) => void, valor: string) {
+    setter(valor);
+    setPagina(1);
+  }
+
   return (
     <div>
       {/* Header */}
       <header className="relative flex items-center justify-center bg-[#EEE7D5] h-[60px] px-6">
-        <img src={logo} alt="logo" className="h-8" />
+        <img src={logo} alt="logo" className="h-12" />
         <div className="absolute right-6 flex gap-4 text-sm text-gray-500">
           <span className="cursor-pointer">pt.br</span>
           <span className="cursor-pointer">eng</span>
@@ -68,14 +86,14 @@ function App() {
           {/* Carrossel */}
           <Carousel className="w-full mb-10">
             <CarouselContent>
-              {itens.map((item, index) => (
-                <CarouselItem key={index} className="basis-full">
+              {destaques.map((d) => (
+                <CarouselItem key={d.id} className="basis-full">
                   <div className="mx-4 bg-[rgba(255,255,255,0.07)] border border-white/20 rounded-[20px] p-6 h-[200px]">
                     <h3 className="text-lg font-bold text-[#EEE7D5] mb-1">
-                      {item.titulo}
+                      {d.titulo}
                     </h3>
                     <p className="text-[#EEE7D5]/60 text-sm">
-                      {item.descricao}
+                      {d.descricao}
                     </p>
                   </div>
                 </CarouselItem>
@@ -92,41 +110,75 @@ function App() {
             </h2>
 
             <div className="grid grid-cols-2 gap-6 mb-4">
-              <div className="flex items-center justify-between border-b border-white pb-2 cursor-pointer">
-                <span className="text-white text-sm">gênero</span>
+              <div className="relative flex items-center justify-between border-b border-white pb-2">
+                <span className="text-white text-sm">
+                  {filtroGenero ? categorias.find(c => c.slug === filtroGenero)?.nome : "gênero"}
+                </span>
                 <ChevronDown className="text-white w-4 h-4" />
+                <select
+                  className="absolute inset-0 opacity-0 cursor-pointer w-full"
+                  value={filtroGenero}
+                  onChange={e => mudarFiltro(setFiltroGenero, e.target.value)}
+                >
+                  <option value="">todos</option>
+                  {categorias.map(c => <option key={c.id} value={c.slug}>{c.nome}</option>)}
+                </select>
               </div>
-              <div className="flex items-center justify-between border-b border-white pb-2 cursor-pointer">
-                <span className="text-white text-sm">tipo</span>
+              <div className="relative flex items-center justify-between border-b border-white pb-2">
+                <span className="text-white text-sm">
+                  {filtroTipo ? tipos.find(t => t.slug === filtroTipo)?.nome : "tipo"}
+                </span>
                 <ChevronDown className="text-white w-4 h-4" />
+                <select
+                  className="absolute inset-0 opacity-0 cursor-pointer w-full"
+                  value={filtroTipo}
+                  onChange={e => mudarFiltro(setFiltroTipo, e.target.value)}
+                >
+                  <option value="">todos</option>
+                  {tipos.map(t => <option key={t.id} value={t.slug}>{t.nome}</option>)}
+                </select>
               </div>
             </div>
 
-            <div className="flex items-center justify-between border-b border-white pb-2 mb-6 cursor-pointer">
-              <span className="text-white text-sm">personagens</span>
+            <div className="relative flex items-center justify-between border-b border-white pb-2 mb-6">
+              <span className="text-white text-sm">
+                {filtroPersonagem ? personagens.find(p => p.slug === filtroPersonagem)?.nome : "personagens"}
+              </span>
               <ChevronDown className="text-white w-4 h-4" />
+              <select
+                className="absolute inset-0 opacity-0 cursor-pointer w-full"
+                value={filtroPersonagem}
+                onChange={e => mudarFiltro(setFiltroPersonagem, e.target.value)}
+              >
+                <option value="">todos</option>
+                {personagens.map(p => <option key={p.id} value={p.slug}>{p.nome}</option>)}
+              </select>
             </div>
 
             <div className="border-t border-dashed border-[#C97C5D]/40 mb-6" />
 
             <div className="grid grid-cols-2 gap-6 mb-6">
-              {historias.map((historia, index) => (
-                <div key={index} className="flex gap-4">
-                  <div className="w-[110px] h-[140px] bg-white/10 rounded-[12px] flex-shrink-0" />
+              {historias.map((historia) => (
+                <div key={historia.id} className="flex gap-4">
+                  <div className="w-[110px] h-[140px] bg-white/10 rounded-[12px] flex-shrink-0 overflow-hidden">
+                    {historia.capa_url && (
+                      <img src={historia.capa_url} alt={historia.titulo} className="w-full h-full object-cover" />
+                    )}
+                  </div>
                   <div className="flex flex-col gap-2">
                     <h3 className="text-white font-bold text-sm uppercase tracking-wide">
                       {historia.titulo}
                     </h3>
                     <p className="text-white text-xs leading-relaxed">
-                      {historia.descricao}
+                      {historia.sinopse}
                     </p>
                     <div className="flex flex-wrap gap-1 mt-1">
-                      {historia.tags.map((tag, i) => (
+                      {[...historia.categorias, ...historia.tipos].map((tag, i) => (
                         <span
                           key={i}
                           className="bg-[#C97C5D]/80 text-white text-xs px-2 py-1 rounded-full"
                         >
-                          {tag}
+                          {tag.nome}
                         </span>
                       ))}
                     </div>
@@ -136,16 +188,23 @@ function App() {
             </div>
 
             <div className="flex items-center justify-center gap-3">
-              <ChevronLeft className="text-white w-4 h-4 cursor-pointer" />
-              {[1, 2, 3, 4].map((n) => (
+              <ChevronLeft
+                className="text-white w-4 h-4 cursor-pointer"
+                onClick={() => setPagina(p => Math.max(1, p - 1))}
+              />
+              {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((n) => (
                 <span
                   key={n}
-                  className="text-white text-sm cursor-pointer px-1"
+                  onClick={() => setPagina(n)}
+                  className={`text-sm cursor-pointer px-1 ${n === pagina ? "text-[#C97C5D] font-bold" : "text-white"}`}
                 >
                   {n}
                 </span>
               ))}
-              <ChevronRight className="text-white w-4 h-4 cursor-pointer" />
+              <ChevronRight
+                className="text-white w-4 h-4 cursor-pointer"
+                onClick={() => setPagina(p => Math.min(totalPaginas, p + 1))}
+              />
             </div>
           </div>
 
