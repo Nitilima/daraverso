@@ -1,18 +1,14 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
 
-html {
-  height: 100%;
-}
+@custom-variant dark (&:is(.dark *));
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
 
 :root {
-  --cor-fundo: #0f0c1a;
+  --cor-fundo: #021033;
   --cor-card: #1a1530;
   --cor-card-hover: #201b3a;
   --cor-accent: #c9a96e;
@@ -21,6 +17,38 @@ html {
   --cor-secundario: #8b7fa8;
   --cor-borda: #2e2645;
   --cor-erro: #e07070;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
 }
 
 body {
@@ -41,70 +69,119 @@ body {
    ======================== */
 
 @keyframes tremeluz-a {
-  0%   { opacity: 0.9; }
-  25%  { opacity: 0.3; }
-  50%  { opacity: 0.8; }
-  75%  { opacity: 0.15; }
-  100% { opacity: 0.9; }
+  0% {
+    opacity: 0.9;
+  }
+
+  25% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+
+  75% {
+    opacity: 0.15;
+  }
+
+  100% {
+    opacity: 0.9;
+  }
 }
 
 @keyframes tremeluz-b {
-  0%   { opacity: 0.2; }
-  30%  { opacity: 1; }
-  55%  { opacity: 0.4; }
-  80%  { opacity: 0.85; }
-  100% { opacity: 0.2; }
+  0% {
+    opacity: 0.2;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  55% {
+    opacity: 0.4;
+  }
+
+  80% {
+    opacity: 0.85;
+  }
+
+  100% {
+    opacity: 0.2;
+  }
 }
 
 @keyframes tremeluz-c {
-  0%   { opacity: 1; filter: brightness(1); }
-  20%  { opacity: 0.3; filter: brightness(0.5); }
-  50%  { opacity: 0.9; filter: brightness(1.2); }
-  70%  { opacity: 0.5; filter: brightness(0.7); }
-  100% { opacity: 1; filter: brightness(1); }
+  0% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+
+  20% {
+    opacity: 0.3;
+    filter: brightness(0.5);
+  }
+
+  50% {
+    opacity: 0.9;
+    filter: brightness(1.2);
+  }
+
+  70% {
+    opacity: 0.5;
+    filter: brightness(0.7);
+  }
+
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
 }
 
 /* Camada 1 — Estrelas pequenas e tênues (65 estrelas, 1px) */
 body::before {
   content: '';
   position: fixed;
-  top: 0; left: 0;
-  width: 1px; height: 1px;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
   background: transparent;
   box-shadow:
-    156px 47px rgba(240,234,255,0.5), 743px 123px rgba(240,234,255,0.35),
-    280px 120px rgba(240,234,255,0.45), 65px 210px rgba(240,234,255,0.3),
-    1050px 130px rgba(240,234,255,0.5), 520px 65px rgba(240,234,255,0.4),
-    850px 250px rgba(240,234,255,0.35), 1450px 150px rgba(240,234,255,0.5),
-    1720px 200px rgba(240,234,255,0.3), 200px 420px rgba(240,234,255,0.45),
-    640px 420px rgba(240,234,255,0.4), 950px 560px rgba(240,234,255,0.35),
-    1500px 440px rgba(240,234,255,0.5), 1680px 380px rgba(240,234,255,0.3),
-    120px 650px rgba(240,234,255,0.45), 590px 750px rgba(240,234,255,0.4),
-    970px 720px rgba(240,234,255,0.35), 1480px 750px rgba(240,234,255,0.5),
-    1790px 810px rgba(240,234,255,0.3), 90px 80px rgba(240,234,255,0.4),
-    730px 250px rgba(240,234,255,0.35), 1150px 80px rgba(240,234,255,0.5),
-    1580px 60px rgba(240,234,255,0.4), 310px 850px rgba(240,234,255,0.35),
-    710px 620px rgba(240,234,255,0.5), 1090px 680px rgba(240,234,255,0.4),
-    1620px 690px rgba(240,234,255,0.35), 40px 700px rgba(240,234,255,0.45),
-    560px 30px rgba(240,234,255,0.5), 820px 165px rgba(240,234,255,0.3),
-    1300px 200px rgba(240,234,255,0.4), 1870px 640px rgba(240,234,255,0.35),
-    170px 760px rgba(240,234,255,0.5), 500px 710px rgba(240,234,255,0.4),
-    810px 920px rgba(240,234,255,0.3), 1570px 720px rgba(240,234,255,0.45),
-    350px 165px rgba(240,234,255,0.4), 680px 140px rgba(240,234,255,0.35),
-    980px 200px rgba(240,234,255,0.5), 1380px 245px rgba(240,234,255,0.4),
-    1850px 85px rgba(240,234,255,0.35), 380px 575px rgba(240,234,255,0.45),
-    770px 780px rgba(240,234,255,0.4), 1160px 800px rgba(240,234,255,0.35),
-    1440px 890px rgba(240,234,255,0.5), 430px 870px rgba(240,234,255,0.4),
-    1130px 620px rgba(240,234,255,0.35), 1290px 840px rgba(240,234,255,0.5),
-    260px 590px rgba(240,234,255,0.4), 900px 55px rgba(240,234,255,0.35),
-    1100px 20px rgba(240,234,255,0.5), 490px 300px rgba(240,234,255,0.4),
-    1180px 285px rgba(240,234,255,0.35), 1650px 120px rgba(240,234,255,0.5),
-    110px 490px rgba(240,234,255,0.4), 620px 345px rgba(240,234,255,0.35),
-    1030px 310px rgba(240,234,255,0.5), 1250px 540px rgba(240,234,255,0.4),
-    280px 920px rgba(240,234,255,0.35), 540px 830px rgba(240,234,255,0.5),
-    1040px 760px rgba(240,234,255,0.4), 445px 220px rgba(240,234,255,0.35),
-    760px 90px rgba(240,234,255,0.5), 1280px 75px rgba(240,234,255,0.4),
-    320px 280px rgba(240,234,255,0.3), 1820px 510px rgba(240,234,255,0.45);
+    156px 47px rgba(240, 234, 255, 0.5), 743px 123px rgba(240, 234, 255, 0.35),
+    280px 120px rgba(240, 234, 255, 0.45), 65px 210px rgba(240, 234, 255, 0.3),
+    1050px 130px rgba(240, 234, 255, 0.5), 520px 65px rgba(240, 234, 255, 0.4),
+    850px 250px rgba(240, 234, 255, 0.35), 1450px 150px rgba(240, 234, 255, 0.5),
+    1720px 200px rgba(240, 234, 255, 0.3), 200px 420px rgba(240, 234, 255, 0.45),
+    640px 420px rgba(240, 234, 255, 0.4), 950px 560px rgba(240, 234, 255, 0.35),
+    1500px 440px rgba(240, 234, 255, 0.5), 1680px 380px rgba(240, 234, 255, 0.3),
+    120px 650px rgba(240, 234, 255, 0.45), 590px 750px rgba(240, 234, 255, 0.4),
+    970px 720px rgba(240, 234, 255, 0.35), 1480px 750px rgba(240, 234, 255, 0.5),
+    1790px 810px rgba(240, 234, 255, 0.3), 90px 80px rgba(240, 234, 255, 0.4),
+    730px 250px rgba(240, 234, 255, 0.35), 1150px 80px rgba(240, 234, 255, 0.5),
+    1580px 60px rgba(240, 234, 255, 0.4), 310px 850px rgba(240, 234, 255, 0.35),
+    710px 620px rgba(240, 234, 255, 0.5), 1090px 680px rgba(240, 234, 255, 0.4),
+    1620px 690px rgba(240, 234, 255, 0.35), 40px 700px rgba(240, 234, 255, 0.45),
+    560px 30px rgba(240, 234, 255, 0.5), 820px 165px rgba(240, 234, 255, 0.3),
+    1300px 200px rgba(240, 234, 255, 0.4), 1870px 640px rgba(240, 234, 255, 0.35),
+    170px 760px rgba(240, 234, 255, 0.5), 500px 710px rgba(240, 234, 255, 0.4),
+    810px 920px rgba(240, 234, 255, 0.3), 1570px 720px rgba(240, 234, 255, 0.45),
+    350px 165px rgba(240, 234, 255, 0.4), 680px 140px rgba(240, 234, 255, 0.35),
+    980px 200px rgba(240, 234, 255, 0.5), 1380px 245px rgba(240, 234, 255, 0.4),
+    1850px 85px rgba(240, 234, 255, 0.35), 380px 575px rgba(240, 234, 255, 0.45),
+    770px 780px rgba(240, 234, 255, 0.4), 1160px 800px rgba(240, 234, 255, 0.35),
+    1440px 890px rgba(240, 234, 255, 0.5), 430px 870px rgba(240, 234, 255, 0.4),
+    1130px 620px rgba(240, 234, 255, 0.35), 1290px 840px rgba(240, 234, 255, 0.5),
+    260px 590px rgba(240, 234, 255, 0.4), 900px 55px rgba(240, 234, 255, 0.35),
+    1100px 20px rgba(240, 234, 255, 0.5), 490px 300px rgba(240, 234, 255, 0.4),
+    1180px 285px rgba(240, 234, 255, 0.35), 1650px 120px rgba(240, 234, 255, 0.5),
+    110px 490px rgba(240, 234, 255, 0.4), 620px 345px rgba(240, 234, 255, 0.35),
+    1030px 310px rgba(240, 234, 255, 0.5), 1250px 540px rgba(240, 234, 255, 0.4),
+    280px 920px rgba(240, 234, 255, 0.35), 540px 830px rgba(240, 234, 255, 0.5),
+    1040px 760px rgba(240, 234, 255, 0.4), 445px 220px rgba(240, 234, 255, 0.35),
+    760px 90px rgba(240, 234, 255, 0.5), 1280px 75px rgba(240, 234, 255, 0.4),
+    320px 280px rgba(240, 234, 255, 0.3), 1820px 510px rgba(240, 234, 255, 0.45);
   animation: tremeluz-a 6s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
@@ -114,23 +191,25 @@ body::before {
 body::after {
   content: '';
   position: fixed;
-  top: 0; left: 0;
-  width: 2px; height: 2px;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 2px;
   background: transparent;
   box-shadow:
-    370px 95px rgba(201,169,110,0.75), 880px 180px rgba(240,234,255,0.85),
-    1340px 95px rgba(201,169,110,0.7), 600px 350px rgba(240,234,255,0.8),
-    1120px 390px rgba(201,169,110,0.75), 200px 540px rgba(240,234,255,0.85),
-    750px 470px rgba(201,169,110,0.7), 1540px 310px rgba(240,234,255,0.8),
-    1780px 420px rgba(201,169,110,0.75), 450px 680px rgba(240,234,255,0.85),
-    1000px 620px rgba(201,169,110,0.7), 1380px 680px rgba(240,234,255,0.8),
-    1670px 580px rgba(201,169,110,0.75), 130px 820px rgba(240,234,255,0.85),
-    680px 860px rgba(201,169,110,0.7), 1200px 820px rgba(240,234,255,0.8),
-    1520px 880px rgba(201,169,110,0.75), 1900px 750px rgba(240,234,255,0.85),
-    330px 170px rgba(201,169,110,0.7), 70px 370px rgba(240,234,255,0.8),
-    1060px 490px rgba(201,169,110,0.75), 850px 720px rgba(240,234,255,0.85),
-    1760px 160px rgba(201,169,110,0.7), 500px 920px rgba(240,234,255,0.8),
-    1290px 440px rgba(201,169,110,0.75);
+    370px 95px rgba(201, 169, 110, 0.75), 880px 180px rgba(240, 234, 255, 0.85),
+    1340px 95px rgba(201, 169, 110, 0.7), 600px 350px rgba(240, 234, 255, 0.8),
+    1120px 390px rgba(201, 169, 110, 0.75), 200px 540px rgba(240, 234, 255, 0.85),
+    750px 470px rgba(201, 169, 110, 0.7), 1540px 310px rgba(240, 234, 255, 0.8),
+    1780px 420px rgba(201, 169, 110, 0.75), 450px 680px rgba(240, 234, 255, 0.85),
+    1000px 620px rgba(201, 169, 110, 0.7), 1380px 680px rgba(240, 234, 255, 0.8),
+    1670px 580px rgba(201, 169, 110, 0.75), 130px 820px rgba(240, 234, 255, 0.85),
+    680px 860px rgba(201, 169, 110, 0.7), 1200px 820px rgba(240, 234, 255, 0.8),
+    1520px 880px rgba(201, 169, 110, 0.75), 1900px 750px rgba(240, 234, 255, 0.85),
+    330px 170px rgba(201, 169, 110, 0.7), 70px 370px rgba(240, 234, 255, 0.8),
+    1060px 490px rgba(201, 169, 110, 0.75), 850px 720px rgba(240, 234, 255, 0.85),
+    1760px 160px rgba(201, 169, 110, 0.7), 500px 920px rgba(240, 234, 255, 0.8),
+    1290px 440px rgba(201, 169, 110, 0.75);
   animation: tremeluz-b 4s ease-in-out 1.5s infinite;
   pointer-events: none;
   z-index: 0;
@@ -140,22 +219,24 @@ body::after {
 html::before {
   content: '';
   position: fixed;
-  top: 0; left: 0;
-  width: 3px; height: 3px;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 3px;
   background: transparent;
   box-shadow:
-    420px 140px 2px 1px rgba(255,248,230,0.95),
-    990px 75px 2px 1px rgba(240,234,255,0.95),
-    1560px 220px 2px 1px rgba(201,169,110,0.9),
-    240px 390px 2px 1px rgba(255,248,230,0.95),
-    780px 540px 2px 1px rgba(240,234,255,0.9),
-    1250px 310px 2px 1px rgba(255,248,230,0.95),
-    1820px 480px 2px 1px rgba(201,169,110,0.9),
-    550px 730px 2px 1px rgba(240,234,255,0.95),
-    1100px 820px 2px 1px rgba(255,248,230,0.9),
-    1640px 750px 2px 1px rgba(201,169,110,0.95),
-    90px 920px 2px 1px rgba(240,234,255,0.9),
-    1430px 560px 2px 1px rgba(255,248,230,0.95);
+    420px 140px 2px 1px rgba(255, 248, 230, 0.95),
+    990px 75px 2px 1px rgba(240, 234, 255, 0.95),
+    1560px 220px 2px 1px rgba(201, 169, 110, 0.9),
+    240px 390px 2px 1px rgba(255, 248, 230, 0.95),
+    780px 540px 2px 1px rgba(240, 234, 255, 0.9),
+    1250px 310px 2px 1px rgba(255, 248, 230, 0.95),
+    1820px 480px 2px 1px rgba(201, 169, 110, 0.9),
+    550px 730px 2px 1px rgba(240, 234, 255, 0.95),
+    1100px 820px 2px 1px rgba(255, 248, 230, 0.9),
+    1640px 750px 2px 1px rgba(201, 169, 110, 0.95),
+    90px 920px 2px 1px rgba(240, 234, 255, 0.9),
+    1430px 560px 2px 1px rgba(255, 248, 230, 0.95);
   filter: blur(0.4px);
   animation: tremeluz-c 3s ease-in-out 0.8s infinite;
   pointer-events: none;
@@ -168,6 +249,7 @@ html::before {
     opacity: 0;
     transform: translateY(18px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -175,8 +257,15 @@ html::before {
 }
 
 @keyframes brilhar {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 .animar-entrada {
@@ -240,4 +329,102 @@ html::before {
 .btn-primario:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+@theme inline {
+  --font-heading: var(--font-sans);
+  --font-sans: 'Geist Variable', sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  html {
+    height: 100%;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    @apply font-sans;
+  }
 }
